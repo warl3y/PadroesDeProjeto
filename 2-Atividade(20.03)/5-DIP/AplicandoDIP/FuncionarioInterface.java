@@ -1,0 +1,3 @@
+interface FuncionarioInterface {
+    double calcularBonus();
+}
