@@ -1,0 +1,3 @@
+interface FuncionarioComProjetosInterface {
+    void gerenciarProjetos();
+}

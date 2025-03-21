@@ -1,0 +1,3 @@
+interface FuncionarioComBonusInterface {
+    void calcularBonus();
+}
