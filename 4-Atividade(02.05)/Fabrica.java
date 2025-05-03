@@ -1,0 +1,3 @@
+interface Fabrica {
+    CamisaEsportiva criarCamisa();
+}
