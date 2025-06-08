@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinema - Filmes</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form, li {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        input, button {
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Cadastro de Filmes</h1>
+
+<form id="form-filme">
+    <input id="titulo" placeholder="Título" required>
+    <input id="duracao" type="number" placeholder="Duração (min)" required>
+    <button type="submit">Salvar</button>
+</form>
+
+<h2>Filmes Cadastrados</h2>
+<ul id="lista-filmes"></ul>
+
+<script>
+    const url = 'http://localhost:8080/filmes';
+
+    const listarFilmes = () => {
+        fetch(url)
+            .then(res => res.json())
+            .then(filmes => {
+                const lista = document.getElementById('lista-filmes');
+                lista.innerHTML = '';
+                filmes.forEach(f => {
+                    lista.innerHTML += `<li>${f.titulo} - ${f.duracao} min</li>`;
+                });
+            });
+    };
+
+    document.getElementById('form-filme').addEventListener('submit', e => {
+        e.preventDefault();
+        const titulo = document.getElementById('titulo').value;
+        const duracao = document.getElementById('duracao').value;
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ titulo, duracao })
+        })
+            .then(res => {
+                if (!res.ok) return res.text().then(msg => Promise.reject(msg));
+                return res.text();
+            })
+            .then(() => {
+                e.target.reset();
+                listarFilmes();
+            })
+            .catch(alert);
+    });
+
+    listarFilmes();
+</script>
+
+</body>
+</html>
